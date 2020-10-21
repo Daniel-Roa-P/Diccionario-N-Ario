@@ -39,7 +39,5 @@ public class Nodo {
     public void setHijos(ArrayList<Nodo> hijos) {
         this.hijos = hijos;
     }
-    
-    
-    
+
 }

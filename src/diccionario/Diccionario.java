@@ -6,6 +6,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,7 +21,7 @@ public class Diccionario extends JFrame implements ActionListener {
     JButton botonConsultarNodo = new JButton("Consultar Nodo");
     JButton botonConsultarDiccionario = new JButton("Consultar diccionario");
     
-    JTextField campoIngresoLlave = new JTextField("uno");
+    JTextField campoIngresoLlave = new JTextField("carlos,andres,andrea,daniel,daniela,luiz,armando,carla,pork");
     JTextField campoIngresoContenido = new JTextField("one");
     JTextField campoConsulta = new JTextField("uno");
     JTextField campoRespuesta = new JTextField("");
@@ -150,36 +151,34 @@ public class Diccionario extends JFrame implements ActionListener {
             
         } else if ( e.getSource() == botonIngresar && arbol != null ){
             
-            String entrada = campoIngresoLlave.getText();
-            String contenido = campoIngresoContenido.getText();
-            Nodo nodoTemporal = arbol.getRaiz();
+            String entrada = campoIngresoLlave.getText().replace(" ", "");
+            String contenido = campoIngresoContenido.getText().replace(" ", "");
             
-            for(int i = 0; i<entrada.length(); i++){
+            String[] listaLlaves = entrada.split(",");
+            String[] listaContenidos = contenido.split(",");
+                   
+//            if(!entrada.equals(" ") && (listaLlaves.length == listaContenidos.length)){
+            if(!entrada.equals(" ")){
                 
-                String temp = String.valueOf(entrada.charAt(i)); 
-                nodoTemporal = arbol.insertar(nodoTemporal, temp);
-                System.out.println(nodoTemporal.getLlave());
-            
-            }
-            
-            Nodo aux = arbol.getRaiz();
-            
-            while(aux != null){
-                
-                System.out.println(aux.getLlave());
-                
-                if(aux.getHijos().size()>0){
+                for(int i=0; i<listaLlaves.length; i++){
+                        
+                    listaLlaves[i] = listaLlaves[i] + "}";
+                    Nodo nodoTemporal = arbol.getRaiz();
                     
-                    aux = aux.getHijos().get(0);
+                    for(int j = 0; j<listaLlaves[i].length(); j++){
                 
-                } else {
-                    
-                    break;
-                    
+                        String temp = String.valueOf(listaLlaves[i].charAt(j)); 
+                        nodoTemporal = arbol.insertar(nodoTemporal, temp);
+
+                    }
+
                 }
-                
             }
             
+            List<String> values = arbol.preorder(arbol.getRaiz());
+            
+            preOrden.setText(values.toString());
+            System.out.println(values.toString());
         }
         
     }
