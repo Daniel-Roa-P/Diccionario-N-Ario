@@ -20,7 +20,7 @@ public class Diccionario extends JFrame implements ActionListener {
     JButton botonConsultarNodo = new JButton("Consultar Nodo");
     JButton botonConsultarDiccionario = new JButton("Consultar diccionario");
     
-    JTextField campoIngresoLave = new JTextField("uno");
+    JTextField campoIngresoLlave = new JTextField("uno");
     JTextField campoIngresoContenido = new JTextField("one");
     JTextField campoConsulta = new JTextField("uno");
     JTextField campoRespuesta = new JTextField("");
@@ -44,6 +44,9 @@ public class Diccionario extends JFrame implements ActionListener {
     JLabel texto8 = new JLabel("Recorrido Preorden : ");
     JLabel texto9 = new JLabel("Recorrido Inorden : ");
     JLabel texto10 = new JLabel("Recorrido Posorden : ");
+    JLabel aviso = new JLabel(" ");
+    
+    Arbol arbol;
     
     public static void main(String[] args) {
 
@@ -66,7 +69,7 @@ public class Diccionario extends JFrame implements ActionListener {
         c.add(botonConsultarNodo);
         c.add(botonConsultarDiccionario);
         
-        c.add(campoIngresoLave);
+        c.add(campoIngresoLlave);
         c.add(campoIngresoContenido);
         c.add(campoConsulta);
         
@@ -83,6 +86,7 @@ public class Diccionario extends JFrame implements ActionListener {
         c.add(texto8);
         c.add(texto9);
         c.add(texto10);
+        c.add(aviso);
         
         c.add(campoConsulta);
         c.add(campoRespuesta);
@@ -100,11 +104,12 @@ public class Diccionario extends JFrame implements ActionListener {
         texto8.setBounds(370, 25, 200, 20);
         texto9.setBounds(370, 50, 500, 20);
         texto10.setBounds(370, 75, 370,20);
+        aviso.setBounds(370, 100, 370,20);
         
         preOrden.setBounds(500, 25, 350, 20);
         inOrden.setBounds(500, 50, 350, 20);
         posOrden.setBounds(500, 75, 350, 20);
-        campoIngresoLave.setBounds(200, 125, 100, 20);
+        campoIngresoLlave.setBounds(200, 125, 100, 20);
         campoIngresoContenido.setBounds(200, 150, 100, 20);
         campoConsulta.setBounds(500, 125, 100, 20);
         campoRespuesta.setBounds(620, 125, 100, 20);
@@ -139,7 +144,43 @@ public class Diccionario extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         
+        if(e.getSource() == botonCrear){
         
+            arbol = new Arbol();
+            
+        } else if ( e.getSource() == botonIngresar && arbol != null ){
+            
+            String entrada = campoIngresoLlave.getText();
+            String contenido = campoIngresoContenido.getText();
+            Nodo nodoTemporal = arbol.getRaiz();
+            
+            for(int i = 0; i<entrada.length(); i++){
+                
+                String temp = String.valueOf(entrada.charAt(i)); 
+                nodoTemporal = arbol.insertar(nodoTemporal, temp);
+                System.out.println(nodoTemporal.getLlave());
+            
+            }
+            
+            Nodo aux = arbol.getRaiz();
+            
+            while(aux != null){
+                
+                System.out.println(aux.getLlave());
+                
+                if(aux.getHijos().size()>0){
+                    
+                    aux = aux.getHijos().get(0);
+                
+                } else {
+                    
+                    break;
+                    
+                }
+                
+            }
+            
+        }
         
     }
     
