@@ -24,8 +24,8 @@ public class Diccionario extends JFrame implements ActionListener {
     JButton botonConsultarNodo = new JButton("Consultar Nodo");
     JButton botonConsultarDiccionario = new JButton("Consultar diccionario");
     
-    JTextField campoIngresoLlave = new JTextField("carlos,andres,andrea,daniel,daniela,luiz,armando,carla,pork");
-    JTextField campoIngresoContenido = new JTextField("one");
+    JTextField campoIngresoLlave = new JTextField("uno,dos,tres,cuatro,cinco,seis,siete");
+    JTextField campoIngresoContenido = new JTextField("one,two,three,four,five,six,seven");
     JTextField campoConsulta = new JTextField("uno");
     JTextField campoRespuesta = new JTextField("");
     JTextField preOrden = new JTextField();
@@ -181,9 +181,9 @@ public class Diccionario extends JFrame implements ActionListener {
 
                     ImageIcon imgIcon2 = new ImageIcon(getClass().getResource("Derecha.png"));
 
-                    Image imgEscalada2 = imgIcon2.getImage().getScaledInstance( (nodo.getHijos().size()*20) , 30, Image.SCALE_SMOOTH);
+                    Image imgEscalada2 = imgIcon2.getImage().getScaledInstance(20, 30, Image.SCALE_SMOOTH);
                     Icon iconoEscalado2 = new ImageIcon(imgEscalada2);
-                    img2.setBounds(coorX + 10, coorY ,(nodo.getHijos().size()*20), 30);
+                    img2.setBounds(coorX + 10, coorY , 20, 30);
                     img2.setIcon(iconoEscalado2);
 
                     panelInterno.add(img2);
@@ -215,6 +215,7 @@ public class Diccionario extends JFrame implements ActionListener {
         if(e.getSource() == botonCrear){
         
             arbol = new Arbol();
+            aviso.setText("Diccionario creado");
             
         } else if ( e.getSource() == botonIngresar && arbol != null ){
             
@@ -229,8 +230,7 @@ public class Diccionario extends JFrame implements ActionListener {
             String[] listaLlaves = entrada.split(",");
             String[] listaContenidos = contenido.split(",");
                    
-//            if(!entrada.equals(" ") && (listaLlaves.length == listaContenidos.length)){
-            if(!entrada.equals(" ")){
+            if(!entrada.equals(" ") && (listaLlaves.length == listaContenidos.length)){
                 
                 for(int i=0; i<listaLlaves.length; i++){
                         
@@ -238,18 +238,34 @@ public class Diccionario extends JFrame implements ActionListener {
                     NodoArbol nodoTemporal = arbol.getRaiz();
                     
                     for(int j = 0; j<listaLlaves[i].length(); j++){
-                
-                        String temp = String.valueOf(listaLlaves[i].charAt(j)); 
-                        nodoTemporal = arbol.insertar(nodoTemporal, temp);
-
+                            
+                        if(listaLlaves[i].charAt(j) == '}'){
+                        
+                            String temp = String.valueOf(listaLlaves[i].charAt(j)); 
+                            nodoTemporal = arbol.insertar(nodoTemporal, temp, listaContenidos[i]);
+                        
+                        } else {
+                            
+                            String temp = String.valueOf(listaLlaves[i].charAt(j)); 
+                            nodoTemporal = arbol.insertar(nodoTemporal, temp, ".");
+                            
+                        }
+                        
+                        
                     }
 
                 }
             }
             
-            List<String> valores = arbol.preorder(arbol.getRaiz());
+            List<String> valores = arbol.preorden(arbol.getRaiz());
+            List<String> valores2 = arbol.postorden(arbol.getRaiz());
             
             preOrden.setText(valores.toString());
+            posOrden.setText(valores2.toString());
+            
+            System.out.println("Preorden:" + valores.toString());
+            System.out.println("Postorden:" + valores2.toString());
+//            System.out.println("Inorden:" + arbol.);
             
             pintar(arbol.getRaiz());
             

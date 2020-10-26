@@ -9,13 +9,18 @@ public class Arbol {
 
     private NodoArbol raiz;
     
+    int indiceActual = 0; 
+    Stack<Pareja> stack = new Stack<Pareja>(); 
+    ArrayList<String> postordenLista = new ArrayList<String>(); 
+    
     Arbol(){
         
         raiz = new NodoArbol("?");
         raiz.getHijos().add(new NodoArbol("}"));
+    
     }
     
-    public NodoArbol insertar(NodoArbol nodo, String llave){
+    public NodoArbol insertar(NodoArbol nodo, String llave, String Contenido){
        
         boolean esHijo = false;
         ArrayList<NodoArbol> hijos = nodo.getHijos();
@@ -35,6 +40,7 @@ public class Arbol {
         if(!esHijo){
         
             nodoActual = new NodoArbol(llave);
+            nodoActual.setContenido(Contenido);
             
             if( !hijos.isEmpty() && (llave.compareTo(hijos.get(hijos.size()-1).getLlave()) < 0) ){
          
@@ -82,45 +88,6 @@ public class Arbol {
         
     }
     
-    public List<String> preorder(NodoArbol root) {
-    
-        List<String> values = new ArrayList<>();
-        updateListIterative(root, values);
-        return values;
-    
-    }
-    
-    private void updateListIterative(NodoArbol root, List<String> values) {
-        if (root == null) {
-            return;
-        }
-        
-        Stack<NodoArbol> stack = new Stack<>();
-        stack.push(root);
-
-        while (!stack.empty()) {
-            NodoArbol temp = stack.pop();
-            values.add(temp.getLlave());
-            
-            List<NodoArbol> childrens = temp.getHijos();
-            
-            for (int i=childrens.size()-1; i>=0; i--) {
-                stack.push(childrens.get(i));
-            }
-        }
-    }
-    
-    private void updateListRecursive(NodoArbol root, List<String> values) {
-        if (root == null) {
-            return;
-        }
-        
-        values.add(root.getLlave());
-        for (NodoArbol node : root.getHijos()) {
-            updateListRecursive(node, values);
-        }
-    }
-
     public NodoArbol getRaiz() {
         return raiz;
     }
@@ -128,6 +95,99 @@ public class Arbol {
     public void setRaiz(NodoArbol raiz) {
         this.raiz = raiz;
     }
+    
+    public List<String> preorden(NodoArbol raiz) {
+    
+        List<String> valores = new ArrayList<>();
+        actualizarListaPre(raiz, valores);
+        return valores;
+    
+    }
+    
+    private void actualizarListaPre(NodoArbol raiz, List<String> valores) {
+        
+        if (raiz == null) {
+            
+            return;
+        
+        }
+        
+        Stack<NodoArbol> pila = new Stack<>();
+        pila.push(raiz);
 
+        while (!pila.empty()) {
+            
+            NodoArbol temp = pila.pop();
+            valores.add(temp.getLlave());
+            
+            List<NodoArbol> hijos = temp.getHijos();
+            
+            for (int i=hijos.size()-1; i>=0; i--) {
+                
+                pila.push(hijos.get(i));
+            
+            }
+            
+        }
+    }    
+    
+    public ArrayList<String> postorden(NodoArbol raiz) {
+        
+        while (raiz != null || !stack.isEmpty()) { 
+           
+            if (raiz != null) { 
+
+                stack.push(new Pareja(raiz, indiceActual)); 
+                indiceActual = 0; 
+
+                if (raiz.getHijos().size() >= 1) { 
+                
+                    raiz = raiz.getHijos().get(0); 
+                
+                } 
+                
+                else { 
+                
+                    raiz = null; 
+                
+                } 
+                
+                continue; 
+            } 
+
+            Pareja temp = stack.pop(); 
+            postordenLista.add(temp.nodo.getLlave()); 
+
+            while (!stack.isEmpty() && temp.indiceHijo == stack.peek().nodo.getHijos().size() - 1) { 
+                
+                temp = stack.pop(); 
+                postordenLista.add(temp.nodo.getLlave()); 
+            
+            } 
+
+            if (!stack.isEmpty()) { 
+                raiz = stack.peek().nodo.getHijos().get(temp.indiceHijo + 1); 
+                indiceActual = temp.indiceHijo + 1; 
+            } 
+        
+        } 
+      
+        return postordenLista; 
+    
+    } 
     
 }
+
+class Pareja { 
+    
+    public NodoArbol nodo; 
+    public int indiceHijo; 
+    
+    public Pareja(NodoArbol nodo, int indiceHijo) {
+        
+        this.nodo = nodo; 
+        this.indiceHijo = indiceHijo; 
+    
+    } 
+
+} 
