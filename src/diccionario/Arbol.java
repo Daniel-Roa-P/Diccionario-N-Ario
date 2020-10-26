@@ -7,19 +7,19 @@ import java.util.Stack;
 
 public class Arbol {
 
-    private Nodo raiz;
+    private NodoArbol raiz;
     
     Arbol(){
         
-        raiz = new Nodo("?");
-        raiz.getHijos().add(new Nodo("}"));
+        raiz = new NodoArbol("?");
+        raiz.getHijos().add(new NodoArbol("}"));
     }
     
-    public Nodo insertar(Nodo nodo, String llave){
+    public NodoArbol insertar(NodoArbol nodo, String llave){
        
         boolean esHijo = false;
-        ArrayList<Nodo> hijos = nodo.getHijos();
-        Nodo nodoActual = null;
+        ArrayList<NodoArbol> hijos = nodo.getHijos();
+        NodoArbol nodoActual = null;
         
         for(int i = 0; i < hijos.size(); i++){
             
@@ -34,7 +34,7 @@ public class Arbol {
         
         if(!esHijo){
         
-            nodoActual = new Nodo(llave);
+            nodoActual = new NodoArbol(llave);
             
             if( !hijos.isEmpty() && (llave.compareTo(hijos.get(hijos.size()-1).getLlave()) < 0) ){
          
@@ -52,13 +52,13 @@ public class Arbol {
     
     }
     
-    public ArrayList<Nodo> ordenar(ArrayList<Nodo> hijos, Nodo nodoActual){
+    public ArrayList<NodoArbol> ordenar(ArrayList<NodoArbol> hijos, NodoArbol nodoActual){
     
-        ArrayList<Nodo> nuevo = new ArrayList<>() ;
+        ArrayList<NodoArbol> nuevo = new ArrayList<>() ;
         
         for(int i = 0; i< hijos.size(); i++){
             
-            Nodo temp = hijos.get(i);
+            NodoArbol temp = hijos.get(i);
             
             if( ( nodoActual.getLlave().compareTo( temp.getLlave() ) < 0) ){
                 
@@ -82,7 +82,7 @@ public class Arbol {
         
     }
     
-    public List<String> preorder(Nodo root) {
+    public List<String> preorder(NodoArbol root) {
     
         List<String> values = new ArrayList<>();
         updateListIterative(root, values);
@@ -90,19 +90,19 @@ public class Arbol {
     
     }
     
-    private void updateListIterative(Nodo root, List<String> values) {
+    private void updateListIterative(NodoArbol root, List<String> values) {
         if (root == null) {
             return;
         }
         
-        Stack<Nodo> stack = new Stack<>();
+        Stack<NodoArbol> stack = new Stack<>();
         stack.push(root);
 
         while (!stack.empty()) {
-            Nodo temp = stack.pop();
+            NodoArbol temp = stack.pop();
             values.add(temp.getLlave());
             
-            List<Nodo> childrens = temp.getHijos();
+            List<NodoArbol> childrens = temp.getHijos();
             
             for (int i=childrens.size()-1; i>=0; i--) {
                 stack.push(childrens.get(i));
@@ -110,22 +110,22 @@ public class Arbol {
         }
     }
     
-    private void updateListRecursive(Nodo root, List<String> values) {
+    private void updateListRecursive(NodoArbol root, List<String> values) {
         if (root == null) {
             return;
         }
         
         values.add(root.getLlave());
-        for (Nodo node : root.getHijos()) {
+        for (NodoArbol node : root.getHijos()) {
             updateListRecursive(node, values);
         }
     }
 
-    public Nodo getRaiz() {
+    public NodoArbol getRaiz() {
         return raiz;
     }
 
-    public void setRaiz(Nodo raiz) {
+    public void setRaiz(NodoArbol raiz) {
         this.raiz = raiz;
     }
 

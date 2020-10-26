@@ -3,13 +3,13 @@ package diccionario;
 
 import java.util.ArrayList;
 
-public class Nodo {
+public class NodoArbol {
     
     private String llave;
     private String contenido;
-    private ArrayList<Nodo> hijos;
+    private ArrayList<NodoArbol> hijos;
 
-    Nodo(String llave){
+    NodoArbol(String llave){
     
         this.llave = llave;
         this.hijos = new ArrayList<>();
@@ -32,11 +32,11 @@ public class Nodo {
         this.contenido = contenido;
     }
 
-    public ArrayList<Nodo> getHijos() {
+    public ArrayList<NodoArbol> getHijos() {
         return hijos;
     }
 
-    public void setHijos(ArrayList<Nodo> hijos) {
+    public void setHijos(ArrayList<NodoArbol> hijos) {
         this.hijos = hijos;
     }
 

@@ -4,9 +4,12 @@ package diccionario;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -48,6 +51,8 @@ public class Diccionario extends JFrame implements ActionListener {
     JLabel aviso = new JLabel(" ");
     
     Arbol arbol;
+    
+    int coorX = 50, coorY = 0;
     
     public static void main(String[] args) {
 
@@ -142,14 +147,81 @@ public class Diccionario extends JFrame implements ActionListener {
         
     }
     
+    public void pintar(NodoArbol nodo){
+        
+        if(!nodo.getHijos().isEmpty()){
+            
+            JLabel caracter = new JLabel( nodo.getLlave() );
+            caracter.setForeground(Color.BLACK);
+            caracter.setBounds(coorX, coorY, 20, 20);
+
+            JLabel img = new JLabel();
+        
+            ImageIcon imgIcon = new ImageIcon(getClass().getResource("Abajo.png"));
+
+            Image imgEscalada = imgIcon.getImage().getScaledInstance(20,30, Image.SCALE_SMOOTH);
+            Icon iconoEscalado = new ImageIcon(imgEscalada);
+            img.setBounds(coorX - 7, coorY + 20, 20, 30);
+            img.setIcon(iconoEscalado);
+
+            panelInterno.add(img);
+
+            panelInterno.add(caracter);
+
+            for(int i = 0; i < nodo.getHijos().size(); i++){
+            
+                int anteriorX = coorX;
+                
+                coorY = coorY + 50;  
+                coorX = coorX + 50*i;
+
+                if( nodo.getHijos().size() > 1 && ((nodo.getHijos().size() - 1) != i) ){
+                
+                    JLabel img2 = new JLabel();
+
+                    ImageIcon imgIcon2 = new ImageIcon(getClass().getResource("Derecha.png"));
+
+                    Image imgEscalada2 = imgIcon2.getImage().getScaledInstance( (nodo.getHijos().size()*20) , 30, Image.SCALE_SMOOTH);
+                    Icon iconoEscalado2 = new ImageIcon(imgEscalada2);
+                    img2.setBounds(coorX + 10, coorY ,(nodo.getHijos().size()*20), 30);
+                    img2.setIcon(iconoEscalado2);
+
+                    panelInterno.add(img2);
+                
+                }
+                
+                pintar(nodo.getHijos().get(i));
+            
+                coorY = coorY - 50;
+                
+            }
+            
+        } else {
+            
+            JLabel caracter = new JLabel( nodo.getLlave() );
+            caracter.setForeground(Color.BLACK);
+            caracter.setBounds(coorX, coorY, 20, 20);
+
+            panelInterno.add(caracter);
+            
+        }
+        
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         
         if(e.getSource() == botonCrear){
         
             arbol = new Arbol();
             
         } else if ( e.getSource() == botonIngresar && arbol != null ){
+            
+            panelInterno.removeAll();
+            
+            coorX = 50;
+            coorY = 0;
             
             String entrada = campoIngresoLlave.getText().replace(" ", "");
             String contenido = campoIngresoContenido.getText().replace(" ", "");
@@ -163,7 +235,7 @@ public class Diccionario extends JFrame implements ActionListener {
                 for(int i=0; i<listaLlaves.length; i++){
                         
                     listaLlaves[i] = listaLlaves[i] + "}";
-                    Nodo nodoTemporal = arbol.getRaiz();
+                    NodoArbol nodoTemporal = arbol.getRaiz();
                     
                     for(int j = 0; j<listaLlaves[i].length(); j++){
                 
@@ -175,10 +247,15 @@ public class Diccionario extends JFrame implements ActionListener {
                 }
             }
             
-            List<String> values = arbol.preorder(arbol.getRaiz());
+            List<String> valores = arbol.preorder(arbol.getRaiz());
             
-            preOrden.setText(values.toString());
-            System.out.println(values.toString());
+            preOrden.setText(valores.toString());
+            
+            pintar(arbol.getRaiz());
+            
+            panelInterno.repaint();
+            panelExterno.setViewportView(panelInterno);
+            
         }
         
     }
