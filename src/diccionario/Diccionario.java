@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -14,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
@@ -50,7 +52,13 @@ public class Diccionario extends JFrame implements ActionListener {
     JLabel texto10 = new JLabel("Recorrido Posorden : ");
     JLabel aviso = new JLabel(" ");
     
+    JTextArea lista = new JTextArea();
+    
     Arbol arbol;
+    
+    ArrayList<String> pila;
+    
+    String cadena = "";
     
     int coorX = 50, coorY = 0;
     
@@ -147,6 +155,28 @@ public class Diccionario extends JFrame implements ActionListener {
         
     }
     
+    public void listar(NodoArbol nodo){
+
+        if(!nodo.getHijos().isEmpty()){
+
+            for(int i = 0; i < nodo.getHijos().size(); i++){
+
+                pila.add(nodo.getLlave());
+                
+                listar(nodo.getHijos().get(i));
+                pila.remove(pila.size()-1);
+                
+            }
+            
+        } else {
+            
+            cadena = cadena + "\n \n " + pila.toString() + " : " + nodo.getContenido();
+            System.out.println(pila.toString() + " : " + nodo.getContenido());
+            
+        }
+   
+    }
+    
     public void pintar(NodoArbol nodo){
         
         if(!nodo.getHijos().isEmpty()){
@@ -209,8 +239,7 @@ public class Diccionario extends JFrame implements ActionListener {
     }
     
     @Override
-    public void actionPerformed(ActionEvent e) {
-        
+    public void actionPerformed(ActionEvent e) {       
         
         if(e.getSource() == botonCrear){
         
@@ -251,8 +280,7 @@ public class Diccionario extends JFrame implements ActionListener {
                             nodoTemporal = arbol.insertar(nodoTemporal, temp, ".");
                             
                         }
-                        
-                        
+                                                
                     }
 
                 }
@@ -307,6 +335,25 @@ public class Diccionario extends JFrame implements ActionListener {
                 }
                 
             }
+            
+        } else if (e.getSource() == botonConsultarDiccionario){
+        
+            panelInterno2.removeAll();
+            lista.removeAll();
+            
+            pila = new ArrayList<>();
+            
+            listar(arbol.getRaiz());
+            
+            lista.setText(" ");
+            lista.setBounds(0, 0, 500, 2000);
+            
+            lista.setText(cadena);
+            
+            panelInterno2.add(lista);
+            panelInterno2.repaint();
+
+            panelExterno2.setViewportView(panelInterno2);
             
         }
         
