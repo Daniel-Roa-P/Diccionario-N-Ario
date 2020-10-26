@@ -110,7 +110,7 @@ public class Diccionario extends JFrame implements ActionListener {
         texto8.setBounds(370, 25, 200, 20);
         texto9.setBounds(370, 50, 500, 20);
         texto10.setBounds(370, 75, 370,20);
-        aviso.setBounds(370, 100, 370,20);
+        aviso.setBounds(370, 100, 500,20);
         
         preOrden.setBounds(500, 25, 350, 20);
         inOrden.setBounds(500, 50, 350, 20);
@@ -215,6 +215,7 @@ public class Diccionario extends JFrame implements ActionListener {
         if(e.getSource() == botonCrear){
         
             arbol = new Arbol();
+            aviso.setForeground(Color.blue);
             aviso.setText("Diccionario creado");
             
         } else if ( e.getSource() == botonIngresar && arbol != null ){
@@ -271,6 +272,41 @@ public class Diccionario extends JFrame implements ActionListener {
             
             panelInterno.repaint();
             panelExterno.setViewportView(panelInterno);
+            
+        } else if ( e.getSource() == botonConsultarNodo ){
+        
+            String entrada = campoConsulta.getText() + "}";
+            NodoArbol nodoTemporal = arbol.getRaiz();
+            
+            if(!entrada.equals(" ")){
+                    
+                for(int i = 0; i < entrada.length(); i++){
+
+                    if(nodoTemporal != null){
+                    
+                    String temp = String.valueOf(entrada.charAt(i)); 
+                    nodoTemporal = arbol.consultar(nodoTemporal, temp);                   
+                    
+                    } else {
+                        
+                        break;
+                        
+                    }
+                }
+                
+                if(nodoTemporal != null){
+                    
+                    System.out.println(nodoTemporal.getLlave());
+                    campoRespuesta.setText(nodoTemporal.getContenido());
+                    
+                } else {
+                    
+                    aviso.setForeground(Color.RED);
+                    aviso.setText("Palabra no registrada en el diccionario");
+                    
+                }
+                
+            }
             
         }
         

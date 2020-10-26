@@ -88,6 +88,26 @@ public class Arbol {
         
     }
     
+    public NodoArbol consultar(NodoArbol nodo, String llave){
+    
+        boolean esHijo = false;
+        NodoArbol nodoActual = null;
+        
+        for(int i = 0; i < nodo.getHijos().size(); i++){
+            
+            if( nodo.getHijos().get(i).getLlave().equals(llave) ){
+            
+                esHijo = true;
+                nodoActual = nodo.getHijos().get(i);
+                
+            }
+            
+        }
+        
+        return nodoActual;
+        
+    }
+    
     public NodoArbol getRaiz() {
         return raiz;
     }
