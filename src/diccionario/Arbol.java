@@ -12,6 +12,7 @@ public class Arbol {
     int indiceActual = 0; 
     Stack<Pareja> stack = new Stack<Pareja>(); 
     ArrayList<String> postordenLista = new ArrayList<String>(); 
+    public ArrayList<String> inordenLista;
     
     Arbol(){
         
@@ -115,6 +116,21 @@ public class Arbol {
     public void setRaiz(NodoArbol raiz) {
         this.raiz = raiz;
     }
+
+    public ArrayList<String> getPostordenLista() {
+        postordenLista = new ArrayList<String>();    
+        return this.postorden(raiz);
+    }
+
+    
+    
+    public ArrayList<String> getInordenLista() {
+        
+        inordenLista = new ArrayList<String>();
+        this.inorden(raiz);
+        return inordenLista;
+        
+    }
     
     public List<String> preorden(NodoArbol raiz) {
     
@@ -150,6 +166,28 @@ public class Arbol {
             
         }
     }    
+    
+    public void inorden(NodoArbol raiz) {
+        
+        if (raiz != null) {
+        
+            if (raiz.getHijos().size() > 0) {
+            
+                inorden(raiz.getHijos().get(0));
+            
+            }
+            
+            System.out.print(raiz.getLlave());
+            this.inordenLista.add(raiz.getLlave());
+            
+            for (int i = 1; i < raiz.getHijos().size(); i++) {
+
+                inorden(raiz.getHijos().get(i));
+            }
+        
+        }
+    
+    }
     
     public ArrayList<String> postorden(NodoArbol raiz) {
         

@@ -287,14 +287,16 @@ public class Diccionario extends JFrame implements ActionListener {
             }
             
             List<String> valores = arbol.preorden(arbol.getRaiz());
-            List<String> valores2 = arbol.postorden(arbol.getRaiz());
+            List<String> valores2 = arbol.getPostordenLista();
+            List<String> valores3 = arbol.getInordenLista();
             
             preOrden.setText(valores.toString());
             posOrden.setText(valores2.toString());
+            inOrden.setText(valores2.toString());
             
             System.out.println("Preorden:" + valores.toString());
             System.out.println("Postorden:" + valores2.toString());
-//            System.out.println("Inorden:" + arbol.);
+            System.out.println("Inorden:" + valores3.toString());
             
             pintar(arbol.getRaiz());
             
